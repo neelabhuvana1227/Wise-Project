@@ -1,0 +1,59 @@
+def read_records():
+    records = []
+    for _ in range(20):
+        record = input()
+        team_a_name = record[:12].strip()
+        team_a_score = int(record[12:14])
+        team_b_name = record[20:32].strip()
+        team_b_score = int(record[32:34])
+        records.append((team_a_name, team_a_score, team_b_name, team_b_score))
+    return records
+
+def build_graph(records):
+    graph = {}
+    for team_a, score_a, team_b, score_b in records:
+        if score_a > score_b:
+            winner, loser = team_a, team_b
+        else:
+            winner, loser = team_b, team_a
+
+        if winner not in graph:
+            graph[winner] = []
+        graph[winner].append(loser)
+    return graph
+
+def dfs(graph, start, target, visited):
+    if start == target:
+        return True
+    if start not in graph or start in visited:
+        return False
+    visited.add(start)
+    for team in graph[start]:
+        if dfs(graph, team, target, visited):
+            return True
+    return False
+
+def process_queries(graph):
+    for _ in range(10):
+        query = input()
+        team_a, team_b = query[:12].strip(), query[12:24].strip()
+        visited = set()
+        if team_a in graph and team_b in graph and dfs(graph, team_a, team_b, visited):
+            if dfs(graph, team_b, team_a, set()):
+                print(f"{team_a} AND {team_b} HAVE DEFEATED EACH OTHER INDIRECTLY")
+            else:
+                print(f"{team_a} DEFEATED {team_b} INDIRECTLY")
+        elif team_b in graph and dfs(graph, team_b, team_a, set()):
+            print(f"{team_b} DEFEATED {team_a} INDIRECTLY")
+        elif team_a in graph and dfs(graph, team_a, team_b, set()):
+            print(f"{team_a} DEFEATED {team_b}")
+        else:
+            print(f"{team_a} AND {team_b} ARE NOT COMPARABLE")
+
+if __name__ == "__main__":
+    print("Enter the first 20 records:")
+    records = read_records()
+    graph = build_graph(records)
+
+    print("\nEnter the last 10 records:")
+    process_queries(graph)
