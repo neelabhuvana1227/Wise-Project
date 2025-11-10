@@ -1,0 +1,210 @@
+from tkinter import *
+team=Tk()
+width= team.winfo_screenwidth()
+height= team.winfo_screenheight()
+def open_team():
+   new=Toplevel(team)
+   new.geometry("1000x1000")
+   new.title("Dash Board")
+   photo1=PhotoImage(file="C:\\Users\\SRITHA KOMURAVELLI\\Pictures\\1234.PNG")
+   lbl1=Label(new,image=photo1,width=new.winfo_screenwidth(),height=new.winfo_screenheight())
+   lbl1.pack()
+   btn=Button(new,text='Enter Records',fg='lemonchiffon2',bg='purple3',command=entry_boxes)
+   btn.place(x=450,y=400)
+   def close2():
+       new.quit()
+       new.destroy()
+   btn1=Button(new,text='BACK',bg="green",command=close2)
+   btn1.place(x=475,y=450)
+   new.mainloop()
+def entry_boxes():
+    root=Tk()
+    root.geometry("1000x1000")
+    def ok():
+        first_col=[entries[i].get() for i in range(0,4,1)]
+        print(first_col)
+        second_col=[entries[i].get() for i in range(4,8,1)]
+        print(second_col)
+        third_col=[entries[i].get() for i in range(8,12,1)]
+        print(third_col)
+        fourth_col=[entries[i].get() for i in range(12,16,1)]
+        print(fourth_col)
+        fifth_col=[entries[i].get() for i in range(16,20,1)]
+        print(fifth_col)
+        sixth_col=[entries[i].get() for i in range(20,24,1)]
+        print(sixth_col)
+
+        team_a_name1=''.join(first_col)
+        print(team_a_name1)
+        team_a_nam1=team_a_name1[0:5].strip()
+        team_a_scor1=int(team_a_name1[5:7])
+        print(team_a_scor1)
+        team_b_nam1=team_a_name1[7:12].strip()
+        team_b_scor1=int(team_a_name1[12:14])
+        print(team_b_scor1)
+
+        team_a_name2=''.join(second_col)
+        team_a_nam2=team_a_name2[0:5].strip()
+        team_a_scor2=int(team_a_name2[5:7])
+        team_b_nam2=team_a_name2[7:12].strip()
+        team_b_scor2=int(team_a_name2[12:14])
+
+        team_a_name3=''.join(third_col)
+        team_a_nam3=team_a_name3[0:5].strip()
+        team_a_scor3=int(team_a_name3[5:7])
+        team_b_nam3=team_a_name3[7:12].strip()
+        team_b_scor3=int(team_a_name3[12:14])
+
+        team_a_name4=''.join(fourth_col)
+        team_a_nam4=team_a_name4[0:5].strip()
+        team_a_scor4=int(team_a_name4[5:7])
+        team_b_nam4=team_a_name4[7:12].strip()
+        team_b_scor4=int(team_a_name4[12:14])
+
+        team_a_name5=''.join(fifth_col)
+        team_a_nam5=team_a_name5[0:5].strip()
+        team_a_scor5=int(team_a_name5[5:7])
+        team_b_nam5=team_a_name5[7:12].strip()
+        team_b_scor5=int(team_a_name5[12:14])
+
+        team_a_name6=''.join(sixth_col)
+        team_a_nam6=team_a_name6[0:5].strip()
+        team_a_scor6=int(team_a_name6[5:7])
+        team_b_nam6=team_a_name6[7:12].strip()
+        team_b_scor6=int(team_a_name6[12:14])
+        global records
+        records = {}
+        if team_a_scor1>team_b_scor1:
+                    records.setdefault(team_a_nam1,[]).append(team_b_nam1)
+        elif team_b_scor1>team_a_scor1:
+                    records.setdefault(team_b_nam1,[]).append(team_a_nam1)
+
+        if team_a_scor2>team_b_scor2:
+                    records.setdefault(team_a_nam2,[]).append(team_b_nam2)
+        elif team_b_scor2>team_a_scor2:
+                    records.setdefault(team_b_nam2,[]).append(team_a_nam2)
+
+        if team_a_scor3>team_b_scor3:
+                    records.setdefault(team_a_nam3,[]).append(team_b_nam3)
+        elif team_b_scor3> team_a_scor3:
+                    records.setdefault(team_b_nam3,[]).append(team_a_nam3)
+
+        if team_a_scor4>team_b_scor4:
+                    records.setdefault(team_a_nam4,[]).append(team_b_nam4)
+        elif team_b_scor4>team_a_scor4:
+                    records.setdefault(team_b_nam4,[]).append(team_a_nam4)
+
+        if team_a_scor5>team_b_scor5:
+                    records.setdefault(team_a_nam5,[]).append(team_b_nam5)
+        elif team_b_scor5>team_a_scor5:
+                    records.setdefault(team_b_nam5,[]).append(team_a_nam5)
+
+        if team_a_scor6>team_b_scor6:
+                    records.setdefault(team_a_nam6,[]).append(team_b_nam6)
+        elif team_b_scor6>team_a_scor6:
+                    records.setdefault(team_b_nam6,[]).append(team_a_nam6)
+        print(records)
+        process_queries()
+    def has_direct_victory(team_a, team_b, records):
+        return team_b in records.get(team_a, [])
+    def has_indirect_victory(team_a, team_b, records):
+        visited = set()
+        s = [team_a]
+        while s:
+            current_team = s.pop()
+            if current_team == team_b:
+                return True
+            visited.add(current_team)
+            for i in records.get(current_team,[]):
+                if i not in visited:
+                    s.append(i)
+        return False
+    
+    def process_queries():
+        global entries1
+        entries1=[]
+        for i in range(1):
+            for j in range(2):
+                e=Entry(root)
+                e.grid(row=11,column=j)
+                entries1.append(e)
+        def query():
+            global records,team_a,team_b,num_queries
+            output_text.delete("1.0", "end")
+            if has_indirect_victory(team_a,team_b,records) and has_indirect_victory(team_b,team_a,records) :
+                output_text.insert("end", f"{team_a} AND {team_b} HAVE DEFEATED EACH OTHER INDIRECTLY\n")
+            elif has_direct_victory(team_a, team_b, records):
+                output_text.insert("end", f"{team_a} DEFEATED {team_b} DIRECTLY\n")
+            elif has_direct_victory(team_b, team_a, records):
+                output_text.insert("end", f"{team_b} DEFEATED {team_a} DIRECTLY\n")
+            elif has_indirect_victory(team_a, team_b, records):
+                output_text.insert("end", f"{team_a} DEFEATED {team_b} INDIRECTLY\n")
+            elif has_indirect_victory(team_b, team_a, records):
+                output_text.insert("end", f"{team_b} DEFEATED {team_a} INDIRECTLY\n")
+            elif (team_a not in records) or (team_b not in records):
+                output_text.insert("end", f"EITHER {team_a} OR {team_b} ARE NOT IN ENTERED RECORDS. PLEASE CHECK!\n")
+            else:
+                output_text.insert("end", f"{team_a} AND {team_b} ARE NOT COMPARABLE\n")
+        output_text = Text(root, height=2, width=80)
+        output_text.grid(row=12,column=15)
+        def names():
+            global entries1,team_a,team_b
+            team_a1=[entries1[i].get() for i in range(0,2,2)]
+            team_b1=[entries1[i].get() for i in range(1,2)]
+            print("teama ",team_a1)
+            print("teamb ",team_b1)
+            team_a=''.join(team_a1)
+            team_b=''.join(team_b1)
+            print(team_a)
+            print(team_b)
+            query()
+        b=Button(root,text="NEXT",bg="purple3",relief="raised",fg="white",command=names)
+        b.grid(row=12,column=1)           
+    button = Button(root, text="OK",command=ok)
+    button.grid(row=7,column=3,columnspan=4) 
+    def Close():
+        root.quit()
+        root.destroy()
+    Btn=Button(root,text="BACK",bg="green",command=Close)
+    Btn.grid(row=11,column=3)
+    entries=[]
+    for i in range(6):
+        for j in range(4):
+            entry=Entry(root)
+            entry.grid(row=i+1, column=j)
+            entries.append(entry)
+    def Close():
+        root.quit()
+        root.destroy()
+    root.mainloop()
+
+def help_win():
+    picture=Toplevel(team)
+    picture.geometry("%dx%d" % (width, height))
+    picture.title("INSTRUCTIONS")   
+    photo1=PhotoImage(file="C:\\Users\\SRITHA KOMURAVELLI\\Pictures\\instructions1.PNG")
+    lbl1=Label(picture,image=photo1,width=picture.winfo_screenwidth(),height=picture.winfo_screenheight())
+    lbl1.pack()
+    def close1():
+        picture.quit()
+        picture.destroy()
+    bck=Button(picture,text="BACK",font=("Caveat",28),fg="black",bg="green",command=close1)
+    bck.place(x=1200,y=650)
+    picture.mainloop()
+def close():
+    team.quit()
+    team.destroy()
+photo=PhotoImage(file="C:\\Users\\D\\Pictures\\teamdetails.PNG")
+lbl=Label(team,image=photo,width=team.winfo_screenwidth(),height=team.winfo_screenheight())
+lbl.pack()
+team.title("TEAM TOURNAMENT")               
+team.geometry("%dx%d" % (width, height))
+label=Label(team,text="TEAM TOURNAMENT",font=('Helvetica 40 bold'),fg='black',bg='steel blue')
+label.place(x=450,y=200)
+btn1=Button(team,text="HELP",command=help_win,font=("Caveat",28),fg="black",bg="green")
+btn1.place(x=250,y=450)
+btn2=Button(team,text="ENTER",font=("Caveat",28),fg="black",bg="green",command=open_team)
+btn2.place(x=700,y=450)
+btn3=Button(team,text="EXIT",font=("Caveat",28),fg="black",bg="green",command=close)
+btn3.place(x=1160,y=450)
+team.mainloop()
